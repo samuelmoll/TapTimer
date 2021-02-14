@@ -32,6 +32,8 @@ class ValveController{
      */
     ValveController(Valve* Valve1, Valve* Valve2, Valve* Valve3, Valve* Valve4, RTC_DS3231* RTC);
 
+    void setAllValvesOff();
+
     /**
      * Returns the Valve pointer array
      *
@@ -72,9 +74,16 @@ class ValveController{
     /**
      * Generates a schedule to start immediately, using the duration as intervals between start and end times 
      *
+     * @brief Initialises schedule for single run
+     */
+    int runScheduleOnceInit(int valveSelect);
+
+    /**
+     * Runs consecutive stations once. Ignores day interval settings. 
+     *
      * @brief Runs each station consecutively once, immediately
      */
-    void runScheduleOnce(int valveSelect);
+    int runScheduleOnce(int valveSelect, int last_valve);
 
     private:
     Valve* valves[NUM_VALVES];                                          // Array holding valve objects belonging to controller
@@ -82,7 +91,8 @@ class ValveController{
     uint8_t valvePins[NUM_VALVES] = {RELAY1, RELAY2, RELAY3, RELAY4};   // Array storing the pins used to control valves
     DateTime startDateTimes[4];                                         // Stores start times for building schedule
     int checkValves = 0x00;                                             // Stores flags for valves on or off
-
+    DateTime startTimeNow[NUM_VALVES];
+    DateTime endTimeNow[NUM_VALVES];
 };
 
 #endif

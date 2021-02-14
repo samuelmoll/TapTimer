@@ -91,11 +91,11 @@ void ValveController::runSchedule(){
     }
 }
 
-void ValveController::runScheduleOnce(int valveSelect) {
+int ValveController::runScheduleOnceInit(int valveSelect) {
     DateTime now = rtc->now();
     TimeSpan durationNow = TimeSpan(0,0,0,0);
-    DateTime startTimeNow[NUM_VALVES] = {};
-    DateTime endTimeNow[NUM_VALVES] = {};
+    //DateTime startTimeNow[NUM_VALVES] = {};
+    //DateTime endTimeNow[NUM_VALVES] = {};
     int last_valve = 0;
     for(int i = 0; i < NUM_VALVES; i++) {
         if (valveSelect & (1<<i)) {
@@ -108,23 +108,34 @@ void ValveController::runScheduleOnce(int valveSelect) {
             Serial.print(startTimeNow[i].hour()); Serial.print(startTimeNow[i].minute());
             Serial.print(":");
             Serial.print(endTimeNow[i].hour()); Serial.println(endTimeNow[i].minute());
+        } else {
+            startTimeNow[i] = now;
+            endTimeNow[i] = now;
         }
     }
-    bool run = 1;
-    while(run) {
-        Serial.print(run);
-        now = rtc->now();
-        for(int i = 0; i < NUM_VALVES; i++) {
-            if (startTimeNow[i].unixtime() < now.unixtime()
-                                    && endTimeNow[i].unixtime() > now.unixtime()) {
-                digitalWrite(valvePins[i], HIGH);
-            } else {
-                digitalWrite(valvePins[i], LOW);
-            }
+    return last_valve;
+}
+
+int ValveController::runScheduleOnce(int valveSelect, int last_valve) {
+    DateTime now = rtc->now();
+    for(int i = 0; i < NUM_VALVES; i++) {
+        if (startTimeNow[i].unixtime() < now.unixtime()
+                                && endTimeNow[i].unixtime() > now.unixtime()) {
+            digitalWrite(valvePins[i], HIGH);
+        } else {
+            digitalWrite(valvePins[i], LOW);
         }
-        if (endTimeNow[last_valve].unixtime() < now.unixtime()) {
-            run = 0;
-        }
+    }
+    if (endTimeNow[last_valve].unixtime() < now.unixtime()) {
+        return 0;
+    } else {
         delay(1000);
+        return 1;
+    }
+}
+
+void ValveController::setAllValvesOff() {
+    for (int i = 0; i < NUM_VALVES; i++) {
+        digitalWrite(valvePins[i], LOW);
     }
 }

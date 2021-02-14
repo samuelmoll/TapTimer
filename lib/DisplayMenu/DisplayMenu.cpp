@@ -12,12 +12,21 @@ char DisplayMenu::wait_for_keypad(bool scroll) {
   uint32_t ms = millis();
   while(keypress == NO_KEY) {
     keypress = keypad->getKey();
-    if(millis()-ms > 300 && scroll) {
+    if(scroll && millis()-ms > 300)  {
         lcd->scrollDisplayLeft();
         ms = millis();
     }
   }
   return keypress;
+}
+
+char DisplayMenu::getKeypress() {
+    return keypad->getKey();
+}
+
+void DisplayMenu::setLCDOff() {
+    lcd->setBacklight(0);
+    lcd->noDisplay();
 }
 
 void DisplayMenu::displayValveInfo(int valveID) {
@@ -184,7 +193,7 @@ void DisplayMenu::displayOptions() {
     lcd->print(time);
 }
 
-bool DisplayMenu::mainMenu() {
+int DisplayMenu::mainMenu() {
     char keypressed;
     int valveID = -1;
     bool saveToEEPROM = false;
@@ -197,47 +206,12 @@ bool DisplayMenu::mainMenu() {
         switch(keypressed) {
             case 'A':
             {
-                valveID = enterValveID();
-                delay(1000);
-                displayValveInfo(valveID);
-                char keypressedEditMenu = wait_for_keypad(0);
-                int cursorCol = 0; int cursorRow = 0;
-                lcd->setCursor(cursorCol,cursorRow);lcd->cursor();
-                do {
-                    switch(keypressedEditMenu) {
-                        case '1':
-                            setStartTime(valveID);
-                            break;
-                        case '3':
-                            setPeriod(valveID);
-                            break;
-                        case '7':
-                            setDuration(valveID);
-                            break;
-                        case '9':
-                            valveController->getValves()[valveID]->toggleValve();
-                            break;
-                        case '*':
-                            keypressedEditMenu = '*';
-                            break;
-                        default:
-                            ;
-                    }
-                    displayValveInfo(valveID);
-                    keypressedEditMenu = wait_for_keypad(0);
-                } while (keypressedEditMenu != '*');
-                break;
+                valveConfigurationMenu();
+                return 1;
             }
 
             case 'B':
-                int valveSelect = valveSelectRunOnce();
-                if(valveSelect > 0) {
-                    valveController->runScheduleOnce(valveSelect);
-                    break;
-                } else {
-                    break;
-                }
-                
+                return 2;                
             case '#':
                 break;
         }
@@ -248,6 +222,38 @@ bool DisplayMenu::mainMenu() {
     lcd->setBacklight(0);
     lcd->noDisplay();
     return saveToEEPROM;
+}
+
+int DisplayMenu::valveConfigurationMenu() {
+    int valveID = enterValveID();
+    delay(1000);
+    displayValveInfo(valveID);
+    char keypressedEditMenu = wait_for_keypad(0);
+    int cursorCol = 0; int cursorRow = 0;
+    lcd->setCursor(cursorCol,cursorRow);lcd->cursor();
+    do {
+        switch(keypressedEditMenu) {
+            case '1':
+                setStartTime(valveID);
+                break;
+            case '3':
+                setPeriod(valveID);
+                break;
+            case '7':
+                setDuration(valveID);
+                break;
+            case '9':
+                valveController->getValves()[valveID]->toggleValve();
+                break;
+            case '*':
+                keypressedEditMenu = '*';
+                break;
+            default:
+                ;
+        }
+        displayValveInfo(valveID);
+        keypressedEditMenu = wait_for_keypad(0);
+    } while (keypressedEditMenu != '*');
 }
 
 int DisplayMenu::valveSelectRunOnce() {

@@ -75,13 +75,33 @@ class DisplayMenu{
         char wait_for_keypad(bool scroll);
 
         /**
+         * Menu function that immediately polls keypad.
+         *
+         * @brief Returns immediate keypress.
+         * 
+         * @return char: the ascii character pressed on the keypad.
+         */
+        char getKeypress();
+
+        void setLCDOff();
+
+        /**
          * Main menu function to change behaviour based upon user input.
          *
          * @brief Main menu runtime, changing behaviour based upon user inputs.
          * 
          * @return bool: returns true when values have been saved to EEPROM.
          */
-        bool mainMenu();
+        int mainMenu();
+
+        /**
+         * Valve Coniguration menu for setting schedule information
+         *
+         * @brief Menu for configuring valve schedules
+         * 
+         * @return int: 
+         */
+        int valveConfigurationMenu();
 
         /**
          * Menu function to handle valve selection for a single run.
