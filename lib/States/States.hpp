@@ -5,6 +5,7 @@
 #include "defines.hpp"
 #include "ValveController.hpp"
 #include "DisplayMenu.hpp"
+#include "EEPROMController.hpp"
 
 #include "StateMachine.hpp"
 

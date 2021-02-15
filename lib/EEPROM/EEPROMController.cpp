@@ -5,7 +5,13 @@ EEPROMController::EEPROMController(Valve* v1, Valve* v2, Valve* v3, Valve* v4) {
   valve2 = v2;
   valve3 = v3;
   valve4 = v4;
+
+  
+
 }
+
+
+
 
 void EEPROMController::initValves(){
   uint16_t sig;

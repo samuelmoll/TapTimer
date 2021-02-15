@@ -17,33 +17,33 @@ class EEPROMController{
 
         void updateEEPROM();
 
+        static uint16_t signature;
+
+        static uint8_t  valve1StartHour;
+        static uint8_t  valve1StartMin;
+        static uint8_t  valve1Duration;
+        static uint8_t  valve1Period;
+        static uint8_t  valve1Enable;
+
+        static uint8_t  valve2StartHour;
+        static uint8_t  valve2StartMin;
+        static uint8_t  valve2Duration;
+        static uint8_t  valve2Period;
+        static uint8_t  valve2Enable;
+
+        static uint8_t  valve3StartHour;
+        static uint8_t  valve3StartMin;
+        static uint8_t  valve3Duration;
+        static uint8_t  valve3Period;
+        static uint8_t  valve3Enable;
+
+        static uint8_t  valve4StartHour;
+        static uint8_t  valve4StartMin;
+        static uint8_t  valve4Duration;
+        static uint8_t  valve4Period;
+        static uint8_t  valve4Enable;
+
     private:
-        uint16_t EEMEM signature;
-
-        uint8_t EEMEM valve1StartHour;
-        uint8_t EEMEM valve1StartMin;
-        uint8_t EEMEM valve1Duration;
-        uint8_t EEMEM valve1Period;
-        uint8_t EEMEM valve1Enable;
-
-        uint8_t EEMEM valve2StartHour;
-        uint8_t EEMEM valve2StartMin;
-        uint8_t EEMEM valve2Duration;
-        uint8_t EEMEM valve2Period;
-        uint8_t EEMEM valve2Enable;
-
-        uint8_t EEMEM valve3StartHour;
-        uint8_t EEMEM valve3StartMin;
-        uint8_t EEMEM valve3Duration;
-        uint8_t EEMEM valve3Period;
-        uint8_t EEMEM valve3Enable;
-
-        uint8_t EEMEM valve4StartHour;
-        uint8_t EEMEM valve4StartMin;
-        uint8_t EEMEM valve4Duration;
-        uint8_t EEMEM valve4Period;
-        uint8_t EEMEM valve4Enable;
-
         Valve* valve1;
         Valve* valve2;
         Valve* valve3;
