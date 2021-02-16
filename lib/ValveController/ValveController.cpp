@@ -17,8 +17,8 @@ int ValveController::getCheckValves(){
     return checkValves;
 }
 
-int* ValveController::getValveInfoRunOnce(int valveID) {
-    int valveInfo[2] = {};
+int* ValveController::getValveInfoRunOnce() {
+    static int valveInfo[2] = {};
     for (int i = 0; i < NUM_VALVES; i++) {
         if((1<<i) & checkValves) {
             valveInfo[0] = i;
@@ -29,23 +29,23 @@ int* ValveController::getValveInfoRunOnce(int valveID) {
 }
 
 int ValveController::getStartTimeHourRunOnce(int valveID) {
-    return startTimeNow[i].hour();
+    return startTimeNow[valveID].hour();
 }
 
 int ValveController::getStartTimeMinRunOnce(int valveID){
-    return startTimeNow[i].minute();
+    return startTimeNow[valveID].minute();
 }
 
 int ValveController::getEndTimeHourRunOnce(int valveID){
-    return endTimeNow[i].hour();
+    return endTimeNow[valveID].hour();
 }
 
 int ValveController::getEndTimeHourRunOnce(int valveID){
-    return endTimeNow[i].minute();
+    return endTimeNow[valveID].minute();
 }
 
 int ValveController::getValveDuration(int valveID){
-    return valves[i].getDuration();
+    return valves[valveID]->getDuration();
 }
 
 

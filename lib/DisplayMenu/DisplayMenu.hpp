@@ -83,6 +83,11 @@ class DisplayMenu{
          */
         char getKeypress();
 
+        /**
+         * Menu function to turn off LCD screen.
+         *
+         * @brief Turns off LCD.
+         */
         void setLCDOff();
 
         /**
@@ -112,7 +117,14 @@ class DisplayMenu{
          */
         int valveSelectRunOnce();
 
-        int valveRunOnceInfo(int* valveInfo);
+        /**
+         * Displays info while single run is operational
+         *
+         * @brief Displays info about which valve is running, and the time left.
+         * 
+         * @param valveInfo Pointer to valve information array furnished by the valve controller.
+         */
+        void valveRunOnceInfo(int valveInfo[]);
 
     private:
     ValveController* valveController;

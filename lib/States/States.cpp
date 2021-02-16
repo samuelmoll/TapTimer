@@ -46,15 +46,17 @@ void RunOnceState::update(StateMachine& machine){
     int run = 1;
     int lastValveState = 0;
     int currentValveState = 0;
-    machine.getDisplayMenu()->setLCDOff();
     while(run && (machine.getDisplayMenu()->getKeypress() != '*')) {
       run = machine.getValveController()->runScheduleOnce(valveSelect, last_valve);
-      currentValveState = machine.getValveController()->getCheckValves();
+      currentValveState = machine.getValveController()->getValveInfoRunOnce()[1];
       if(currentValveState != lastValveState) {
-        machine.getDisplayMenu()->valveRunOnceInfo(currentValveState);
+        machine.getDisplayMenu()->valveRunOnceInfo(machine.getValveController()->getValveInfoRunOnce());
       }
+      lastValveState = currentValveState;
     } 
   }
+  
+  machine.getDisplayMenu()->setLCDOff();
   machine.getValveController()->setAllValvesOff();
   machine.getValveController()->initSchedule();
   if(machine.transitionsEnabled()) {setState(machine, new RunScheduleState());}

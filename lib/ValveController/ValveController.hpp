@@ -32,6 +32,11 @@ class ValveController{
      */
     ValveController(Valve* Valve1, Valve* Valve2, Valve* Valve3, Valve* Valve4, RTC_DS3231* RTC);
 
+    /**
+     * Turns all valves off (i.e. sends a low signal)
+     *
+     * @brief Writes a zero to all valve relays.
+     */
     void setAllValvesOff();
 
     /**
@@ -43,15 +48,29 @@ class ValveController{
      */
     Valve** getValves();
 
+    /**
+     * Returns the boolean flags indicating whether a valve is on.
+     *
+     * @brief Returns th boolean flags indicating a vavle is on (zero-indexed)
+     * 
+     * @return int: 8 bit flag (LSB is Valve "1", valve ID 0)
+     */
     int getCheckValves();
 
-    int* getValveInfoRunOnce(int valveID);
+    /**
+     * Returns currently running valve info for menu display.
+     *
+     * @brief Returns valve ID of currently running valve, and time in mins until valve turns off.
+     * 
+     * @return int[2]: contains valve ON [0], and time left[1].
+     */
+    int * getValveInfoRunOnce();
 
     int getStartTimeHourRunOnce(int valveID);
     int getStartTimeMinRunOnce(int valveID);
     int getEndTimeHourRunOnce(int valveID);
     int getEndTimeMinRunOnce(int valveID);
-    
+    int getValveDuration(int valveID);
 
     /**
      * Returns the number of days until the next schedulaed start

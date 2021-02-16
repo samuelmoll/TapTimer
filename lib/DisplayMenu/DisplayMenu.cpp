@@ -286,14 +286,13 @@ int DisplayMenu::valveSelectRunOnce() {
     }
 }
 
-int DisplayMenu::valveRunOnceInfo(int* valveInfo) {
+void DisplayMenu::valveRunOnceInfo(int valveInfo[]) {
     lcd->clear();lcd->home();
-    for (int i = 0; i < NUM_VALVES; i++) {
-        if((1<<i) & checkValves) {
-            lcd->print(sprintf("Valve %i ON", valveInfo[0]+1));
-            lcd->setCursor(1,0);
-
-            lcd->print(sprintf("%2d remaining", valveInfo[1]));
-        }
-    }
+    char topRow[16];
+    char bottomRow[16];
+    int valve = valveInfo[0] + 1;
+    int minsLeft = valveInfo[1] + 1;
+    lcd->print(sprintf(topRow, "Valve %d ON", valve));
+    lcd->setCursor(1,0);
+    lcd->print(sprintf(bottomRow, "%2d remaining", minsLeft));
 }
