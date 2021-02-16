@@ -13,6 +13,42 @@ Valve** ValveController::getValves(){
     return valves;
 }
 
+int ValveController::getCheckValves(){
+    return checkValves;
+}
+
+int* ValveController::getValveInfoRunOnce(int valveID) {
+    int valveInfo[2] = {};
+    for (int i = 0; i < NUM_VALVES; i++) {
+        if((1<<i) & checkValves) {
+            valveInfo[0] = i;
+            valveInfo[1] = (endTimeNow[i].unixtime() - rtc->now().unixtime())/60 +1;
+        }
+    }
+    return valveInfo;
+}
+
+int ValveController::getStartTimeHourRunOnce(int valveID) {
+    return startTimeNow[i].hour();
+}
+
+int ValveController::getStartTimeMinRunOnce(int valveID){
+    return startTimeNow[i].minute();
+}
+
+int ValveController::getEndTimeHourRunOnce(int valveID){
+    return endTimeNow[i].hour();
+}
+
+int ValveController::getEndTimeHourRunOnce(int valveID){
+    return endTimeNow[i].minute();
+}
+
+int ValveController::getValveDuration(int valveID){
+    return valves[i].getDuration();
+}
+
+
 int ValveController::getNextWeekdayInterval(int valveID, DateTime now) {
     uint8_t period = valves[valveID]->getPeriod();
     int dayInterval = 0;
@@ -76,6 +112,7 @@ void ValveController::runSchedule(){
                 checkValves |= (1<<i);
             } else {
                 digitalWrite(valvePins[i], LOW);
+                checkValves = checkValves & ~(1<<i);
                 if (endTime.unixtime() < now.unixtime()) {  // Update next run time for this valve. Intended to occur first time endTime is in the past.
                     uint8_t period = valves[i]->getPeriod();
                     int dayInterval = 0;
@@ -122,8 +159,10 @@ int ValveController::runScheduleOnce(int valveSelect, int last_valve) {
         if (startTimeNow[i].unixtime() < now.unixtime()
                                 && endTimeNow[i].unixtime() > now.unixtime()) {
             digitalWrite(valvePins[i], HIGH);
+            checkValves = checkValves | (1<<i);
         } else {
             digitalWrite(valvePins[i], LOW);
+            checkValves = checkValves & ~(1<<i);
         }
     }
     if (endTimeNow[last_valve].unixtime() < now.unixtime()) {

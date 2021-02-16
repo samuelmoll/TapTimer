@@ -43,6 +43,16 @@ class ValveController{
      */
     Valve** getValves();
 
+    int getCheckValves();
+
+    int* getValveInfoRunOnce(int valveID);
+
+    int getStartTimeHourRunOnce(int valveID);
+    int getStartTimeMinRunOnce(int valveID);
+    int getEndTimeHourRunOnce(int valveID);
+    int getEndTimeMinRunOnce(int valveID);
+    
+
     /**
      * Returns the number of days until the next schedulaed start
      *

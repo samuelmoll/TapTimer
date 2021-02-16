@@ -112,6 +112,8 @@ class DisplayMenu{
          */
         int valveSelectRunOnce();
 
+        int valveRunOnceInfo(int* valveInfo);
+
     private:
     ValveController* valveController;
     LiquidCrystal_PCF8574* lcd;
